@@ -1466,7 +1466,7 @@ mysql_start() {
 
 # low level MySQL start
 mysql_start_low() {
-   touch $OCF_RESKEY_log
+   : > $OCF_RESKEY_log
    chown $OCF_RESKEY_user:$OCF_RESKEY_group $OCF_RESKEY_log
    chmod 0640 $OCF_RESKEY_log
    [ -x /sbin/restorecon ] && /sbin/restorecon $OCF_RESKEY_log
