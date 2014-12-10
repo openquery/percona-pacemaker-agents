@@ -149,7 +149,7 @@ MYSQL_SBINDIR=`dirname ${OCF_RESKEY_binary}`
 # Convenience variables
 
 MYSQL=$OCF_RESKEY_client_binary
-MYSQL_BINDIR=`dirname ${OCF_RESKEY_client_binary}`
+MYSQL_BINDIR=${OCF_RESKEY_client_binary%/*}
 
 MYSQL_OPTIONS_LOCAL="-A -S $OCF_RESKEY_socket --connect_timeout=10"
 MYSQL_OPTIONS_REPL="$MYSQL_OPTIONS_LOCAL --user=$OCF_RESKEY_replication_user --password=$OCF_RESKEY_replication_passwd"
@@ -1004,7 +1004,7 @@ unset_master(){
       # First, where are the relay logs?  That will be easier when the using_multi_config 
       # branch will be merged.  If the path is not defined, the output will be "."
       relaylog_path=`${OCF_RESKEY_binary} --defaults-file=$OCF_RESKEY_config --verbose --help --user=$OCF_RESKEY_user | grep -e '^relay-log ' | awk '{ print $2 }'`
-      relaylog_path=`dirname $relaylog_path`
+      relaylog_path=${relaylog_path%/*}`
 
       if [ "$relaylog_path" == "." ]; then
          relaylog_path=$OCF_RESKEY_datadir
@@ -1482,14 +1482,14 @@ mysql_start_low() {
       chown -R $OCF_RESKEY_user:$OCF_RESKEY_group $OCF_RESKEY_datadir
    fi
    
-   pid_dir=`dirname $OCF_RESKEY_pid`
+   pid_dir=${OCF_RESKEY_pid%/*}
    if [ ! -d $pid_dir ] ; then
       ocf_log info "Creating PID dir: $pid_dir"
       mkdir -p $pid_dir
       chown $OCF_RESKEY_user:$OCF_RESKEY_group $pid_dir
    fi
    
-   socket_dir=`dirname $OCF_RESKEY_socket`
+   socket_dir=${OCF_RESKEY_socket%/*}
    if [ ! -d $socket_dir ] ; then
       ocf_log info "Creating socket dir: $socket_dir"
       mkdir -p $socket_dir

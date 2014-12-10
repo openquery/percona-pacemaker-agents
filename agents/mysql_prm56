@@ -102,7 +102,7 @@ OCF_RESKEY_booth_master_ticket_default="ticketMaster"
 OCF_RESKEY_async_stop_default=0
 
 : ${OCF_RESKEY_binary=${OCF_RESKEY_binary_default}}
-MYSQL_BINDIR=`dirname ${OCF_RESKEY_binary}`
+MYSQL_BINDIR=${OCF_RESKEY_client_binary%/*}
 
 : ${OCF_RESKEY_client_binary=${OCF_RESKEY_client_binary_default}}
 
@@ -1409,14 +1409,14 @@ mysql_start_low() {
       chown -R $OCF_RESKEY_user:$OCF_RESKEY_group $OCF_RESKEY_datadir
    fi
    
-   pid_dir=`dirname $OCF_RESKEY_pid`
+   pid_dir=${OCF_RESKEY_pid%/*}
    if [ ! -d $pid_dir ] ; then
       ocf_log info "Creating PID dir: $pid_dir"
       mkdir -p $pid_dir
       chown $OCF_RESKEY_user:$OCF_RESKEY_group $pid_dir
    fi
    
-   socket_dir=`dirname $OCF_RESKEY_socket`
+   socket_dir=${OCF_RESKEY_socket%/*}
    if [ ! -d $socket_dir ] ; then
       ocf_log info "Creating socket dir: $socket_dir"
       mkdir -p $socket_dir
